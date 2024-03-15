@@ -3,34 +3,30 @@
 #include <cmath>
 using namespace std;
 
-string intToBinary(int x, int n) {
-	if (0 > x || x > (1 << n) - 1) {
-		return "overflow";
+string intToBinary(int x, int n)
+{
+	string ans = "";
+	while (x > 0) {
+		int bit = x & 1;
+		ans = to_string(bit) + ans;
+		n--;
+		x = x >> 1;
 	}
-	else {
-		string ans = "";
-		while (x > 0) {
-			int bit = x & 1;
-			ans = to_string(bit) + ans;
-			n--;
-			x = x >> 1;
-		}
-		while (n > 0) {
-			ans = "0" + ans;
-			n--;
-		}
-		return ans;
+	while (n > 0) {
+		ans = "0" + ans;
+		n--;
 	}
+	return ans;
 }
 
 string sign_Magnitude(int x) {
-	if (-(1 << 7) + 1 > x || x > (1 << 7) - 1) {
+	if (-127 > x || x > 127) {
 		return "overflow";
 	}
 	else {
 		string ans = "";
 		if (x == 0) {
-			ans = "00000000 hoac 10000000";
+			ans = "00000000 or 10000000";
 		}
 		else if (x > 0) {
 			ans = "0" + intToBinary(x, 7);
@@ -43,13 +39,13 @@ string sign_Magnitude(int x) {
 }
 
 string one_Complement(int x) {
-	if (-(1 << 7) + 1 > x || x > (1 << 7) - 1) {
+	if (-127 > x || x > 127) {
 		return "overflow";
 	}
 	else {
 		string ans = "";
 		if (x == 0) {
-			ans = "00000000 hoac 11111111";
+			ans = "00000000 or 11111111";
 		}
 		else if (x > 0) {
 			ans = "0" + intToBinary(x, 7);
@@ -62,7 +58,7 @@ string one_Complement(int x) {
 	}
 }
 string two_Complement(int x) {
-	if (-(1 << 7) > x || x > (1 << 7) - 1) {
+	if (-128 > x || x > 127) {
 		return "overflow";
 	}
 	else {
@@ -80,22 +76,28 @@ string two_Complement(int x) {
 	}
 }
 string two_ComplementToHexa(string s) {
+	if (s == "overflow") {
+		return "overflow";
+	}
 	string text = "0123456789ABCDE";
 	string ans = "";
-	for (int i = s.length()  - 1; i >= 0; i -= 4) {
+	for (int i = s.length() - 1; i >= 0; i -= 4) {
 		int temp = 0;
 		for (int j = 0; j < 4; j++) {
-			temp += ((s[i-j] - '0') << j);
+			temp += ((s[i - j] - '0') << j);
 		}
-		ans = string(1,text[temp]) + ans;
+		ans = string(1, text[temp]) + ans;
 	}
 	return ans;
 }
 
 int main() {
-	cout <<"Output a: "<< sign_Magnitude(-128) << endl;
-	cout << "Output b: " << one_Complement(-128) << endl;
-	cout << "Output c: " << two_Complement(-128) << endl;
-	string s = two_Complement(-128);
+	int n;
+	cout << "Input n: ";
+	cin >> n;
+	cout << "Output a: " << sign_Magnitude(n) << endl;
+	cout << "Output b: " << one_Complement(n) << endl;
+	cout << "Output c: " << two_Complement(n) << endl;
+	string s = two_Complement(n);
 	cout << "Hexadecimal: " << two_ComplementToHexa(s);
 }
