@@ -79,7 +79,7 @@ string two_ComplementToHexa(string s) {
 	if (s == "overflow") {
 		return "overflow";
 	}
-	string text = "0123456789ABCDE";
+	string text = "0123456789ABCDEF";
 	string ans = "";
 	for (int i = s.length() - 1; i >= 0; i -= 4) {
 		int temp = 0;
